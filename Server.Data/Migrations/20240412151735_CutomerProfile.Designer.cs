@@ -11,8 +11,8 @@ using Server.Data.DBContexts;
 namespace Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240411144600_AdminCustomer")]
-    partial class AdminCustomer
+    [Migration("20240412151735_CutomerProfile")]
+    partial class CutomerProfile
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,25 @@ namespace Server.Data.Migrations
                     b.ToTable("Admins");
                 });
 
+            modelBuilder.Entity("Server.Core.Entities.AdminRefreshTokenInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AdminRefreshTokenInfos");
+                });
+
             modelBuilder.Entity("Server.Core.Entities.Customer", b =>
                 {
                     b.Property<int>("Id")
@@ -63,13 +82,7 @@ namespace Server.Data.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProfileId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProfileId")
-                        .IsUnique();
 
                     b.ToTable("Customers");
                 });
@@ -111,24 +124,26 @@ namespace Server.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CustomerId")
+                        .IsUnique();
+
                     b.ToTable("Profiles");
-                });
-
-            modelBuilder.Entity("Server.Core.Entities.Customer", b =>
-                {
-                    b.HasOne("Server.Core.Entities.Profile", "Profile")
-                        .WithOne("Customer")
-                        .HasForeignKey("Server.Core.Entities.Customer", "ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("Server.Core.Entities.Profile", b =>
                 {
-                    b.Navigation("Customer")
+                    b.HasOne("Server.Core.Entities.Customer", "Customer")
+                        .WithOne("Profile")
+                        .HasForeignKey("Server.Core.Entities.Profile", "CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("Server.Core.Entities.Customer", b =>
+                {
+                    b.Navigation("Profile");
                 });
 #pragma warning restore 612, 618
         }

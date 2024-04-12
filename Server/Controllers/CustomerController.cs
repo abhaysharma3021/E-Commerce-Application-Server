@@ -6,18 +6,14 @@ using Server.Core.Responses;
 
 namespace Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/user")]
     [ApiController]
-    public class AdminController : ControllerBase
+    public class CustomerController : ControllerBase
     {
-        #region Properties
-        private readonly AdminService adminService;
-        #endregion
-
-        #region Methods
-        public AdminController(AdminService _adminService)
+        private readonly CustomerService customerService;
+        public CustomerController(CustomerService _customerService)
         {
-            adminService = _adminService;
+            customerService = _customerService;
         }
 
         [HttpPost("register")]
@@ -25,10 +21,10 @@ namespace Server.Controllers
         {
             try
             {
-                var response = await adminService.CreateAsync(user);
+                var response = await customerService.CreateAsync(user);
                 return response;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new GeneralResponse(false, ex.Message);
             }
@@ -38,10 +34,10 @@ namespace Server.Controllers
         {
             try
             {
-                var response = await adminService.SignInAsync(user);
+                var response = await customerService.SignInAsync(user);
                 return response;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return new LoginResponse(false, ex.Message);
             }
@@ -51,14 +47,13 @@ namespace Server.Controllers
         {
             try
             {
-                var response = await adminService.RefreshTokenAsync(token);
+                var response = await customerService.RefreshTokenAsync(token);
                 return response;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return new LoginResponse(false, ex.Message);
             }
         }
-        #endregion
     }
 }

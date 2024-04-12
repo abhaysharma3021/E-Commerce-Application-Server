@@ -4,45 +4,43 @@ using Server.Data.Repositories.Contracts;
 
 namespace Server.Business.Services
 {
-    public class AdminService
+    public class CustomerService
     {
         #region Properties
-        private readonly IAdminRepository _adminRepository;
+        private readonly ICustomerRepository _customerRepository;
         #endregion
 
         #region Methods
-        public AdminService(IAdminRepository adminRepository)
+        public CustomerService(ICustomerRepository customerRepository)
         {
-            _adminRepository = adminRepository ?? throw new ArgumentNullException(nameof(adminRepository));
+            _customerRepository = customerRepository;
         }
 
         public async Task<GeneralResponse> CreateAsync(Register user)
         {
-            if (user == null)
+            if (user is null)
                 return new GeneralResponse(false, "Invalid Fields");
 
-            // Create Admin User
-            var response = await _adminRepository.CreateAsync(user);
+            // Register Customer
+            var response = await _customerRepository.CreateAsync(user);
             return response;
         }
-
         public async Task<LoginResponse> SignInAsync(Login user)
         {
-            if (user == null)
+            if (user is null)
                 return new LoginResponse(false, "Invalid Fields");
 
-            // Login Admin User
-            var response = await _adminRepository.SignInAsync(user);
+            // Login Customer
+            var response = await _customerRepository.SignInAsync(user);
             return response;
         }
-
         public async Task<LoginResponse> RefreshTokenAsync(RefreshToken token)
         {
             if (token is null)
-                return new LoginResponse(false, "Invalid Token");
+                return new LoginResponse(false, "Invalid Fields");
 
-            // Refresh Tokens
-            var response = await _adminRepository.RefreshTokenAsync(token);
+            // Refresh Token
+            var response = await _customerRepository.RefreshTokenAsync(token);
             return response;
         }
         #endregion

@@ -25,7 +25,9 @@ builder.Services.Configure<JwtSection>(builder.Configuration.GetSection("JwtSect
 
 // Add services
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<AdminService>();
+builder.Services.AddScoped<CustomerService>();
 
 var app = builder.Build();
 

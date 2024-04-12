@@ -14,8 +14,8 @@ namespace Server.Core.Entities
         public string? Country { get; set; }
         public string? Phone { get; set; }
 
-        [ForeignKey("Customer")]
+        
         public int CustomerId { get; set; }
-        public Customer Customer { get; set; }
+        public Customer? Customer { get; set; }
     }
 }

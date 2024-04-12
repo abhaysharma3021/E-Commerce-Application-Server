@@ -9,8 +9,6 @@ namespace Server.Core.Entities
         public string? Email { get; set; }
         public string? Password { get; set; }
 
-        [ForeignKey("Profile")]
-        public int ProfileId { get; set; }
-        public Profile Profile { get; set; }
+        public Profile? Profile { get; set; }
     }
 }
